@@ -11,40 +11,43 @@
 #
 # Happy Coding!
 
-service: aws-nodejs # NOTE: update this with your service name
+service: ga-lead-excercise-db # NOTE: update this with your service name
 
 provider:
   name: aws
   runtime: nodejs4.3
-
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
-
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-
-# you can add packaging information here
-#package:
-#  exclude:
-#    - exclude-me.js
-#  artifact: my-service-code.zip
+  memorySize: 128 # optional, default is 1024
+  stage: dev
+  region: ap-southeast-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Resource: "*"
+      Action:
+        - "dynamodb:*"
 
 functions:
-  hello:
-    handler: handler.hello
+  leads:
+    handler: handler.leads
+    events:
+      - http:
+          path: leads
+          method: POST
+      - http:
+          path: leads
+          method: GET
+      - http:
+          path: leads
+          method: PUT
+      - http:
+          path: leads
+          method: DELETE
+  ga:
+    handler: handler.ga
+    events:
+      - http:
+          path: ga/send
+          method: POST
+          cors: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
