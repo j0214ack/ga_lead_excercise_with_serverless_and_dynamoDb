@@ -32,15 +32,19 @@ functions:
       - http:
           path: leads
           method: POST
+          cors: true
       - http:
           path: leads
           method: GET
+          cors: true
       - http:
           path: leads
           method: PUT
+          cors: true
       - http:
           path: leads
           method: DELETE
+          cors: true
   ga:
     handler: handler.ga
     events:
